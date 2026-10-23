@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Clients – Fortune Creative",
+  title: "Clients",
   description:
     "Current and recent clients of Fortune Creative, a press agency for Broadway and music.",
 };

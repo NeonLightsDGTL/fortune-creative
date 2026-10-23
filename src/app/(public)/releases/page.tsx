@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Releases – Fortune Creative",
+  title: "Releases",
   description:
     "Press releases from Fortune Creative covering Broadway, music, tours, and more.",
 };

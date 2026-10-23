@@ -2,7 +2,7 @@ import EmailDialog from "@/components/email-dialog";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact – Fortune Creative",
+  title: "Contact",
   description:
     "Get in touch with Dan Fortune at Fortune Creative for press inquiries.",
 };

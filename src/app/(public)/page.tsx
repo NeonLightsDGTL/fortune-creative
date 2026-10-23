@@ -1,8 +1,22 @@
 import { createClient } from "@/lib/supabase/server";
 import { storageUrl, formatDate } from "@/lib/utils";
 import Carousel from "@/components/carousel";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "Fortune Creative | Press Agency for Broadway and Music",
+  },
+  description:
+    "A press agency for artists, productions, and organizations across Broadway and music.",
+  openGraph: {
+    title: "Fortune Creative",
+    description:
+      "A press agency for artists, productions, and organizations across Broadway and music.",
+  },
+};
 
 export const dynamic = "force-dynamic";
 

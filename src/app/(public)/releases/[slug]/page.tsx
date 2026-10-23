@@ -16,20 +16,25 @@ export async function generateMetadata({
   const supabase = await createClient();
   const { data: release } = await supabase
     .from("releases")
-    .select("headline, blurb")
+    .select("headline, blurb, thumbnail_path, release_date")
     .eq("slug", slug)
     .eq("status", "published")
     .single();
 
-  if (!release) return { title: "Release not found – Fortune Creative" };
+  if (!release) return { title: "Release Not Found" };
+
+  const description = release.blurb || release.headline;
+  const ogImage = storageUrl("releases", release.thumbnail_path);
 
   return {
-    title: `${release.headline} – Fortune Creative`,
-    description: release.blurb || release.headline,
+    title: release.headline,
+    description,
     openGraph: {
       title: release.headline,
-      description: release.blurb || release.headline,
+      description,
       type: "article",
+      publishedTime: release.release_date,
+      ...(ogImage && { images: [{ url: ogImage, width: 1600, height: 900 }] }),
     },
   };
 }

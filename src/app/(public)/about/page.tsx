@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "About Dan Fortune – Fortune Creative",
+  title: "About Dan Fortune",
   description:
     "Dan Fortune, President of Fortune Creative, has enjoyed a varied career in arts publicity for over a decade.",
 };
