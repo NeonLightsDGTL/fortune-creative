@@ -7,7 +7,7 @@ export default function PublicLayout({
 }) {
   return (
     <>
-      <SiteHeader />
+      <SiteHeader turnstileSiteKey={process.env.TURNSTILE_SITE_KEY} />
       <main>{children}</main>
     </>
   );

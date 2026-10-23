@@ -2,8 +2,23 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { signupAction } from "@/lib/signup-action";
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (
+        el: HTMLElement,
+        opts: { sitekey: string; callback: (token: string) => void }
+      ) => string;
+      reset: (id: string) => void;
+      remove: (id: string) => void;
+    };
+  }
+}
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -19,20 +34,67 @@ function isCurrent(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(href + "/");
 }
 
+function Turnstile({
+  siteKey,
+  onToken,
+}: {
+  siteKey: string;
+  onToken: (token: string) => void;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const widgetId = useRef<string | null>(null);
+  const onTokenRef = useRef(onToken);
+  onTokenRef.current = onToken;
+
+  const mount = useCallback(() => {
+    if (!containerRef.current || !window.turnstile || widgetId.current) return;
+    widgetId.current = window.turnstile.render(containerRef.current, {
+      sitekey: siteKey,
+      callback: (token: string) => onTokenRef.current(token),
+    });
+  }, [siteKey]);
+
+  useEffect(() => {
+    mount();
+    return () => {
+      if (widgetId.current && window.turnstile) {
+        window.turnstile.remove(widgetId.current);
+        widgetId.current = null;
+      }
+    };
+  }, [mount]);
+
+  return (
+    <>
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+        onReady={mount}
+      />
+      <div ref={containerRef} />
+    </>
+  );
+}
+
 function SignupForm({
   id,
   mobile,
+  turnstileSiteKey,
 }: {
   id: string;
   mobile?: boolean;
+  turnstileSiteKey?: string;
 }) {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
 
-  if (submitted) {
+  if (status === "success") {
     return (
       <p
         role="status"
-        className={`m-0 text-[${mobile ? "16" : "15"}px] leading-[1.4] ${
+        className={`m-0 ${mobile ? "text-[16px]" : "text-[15px]"} leading-[1.4] ${
           mobile
             ? "py-3.5 border-t border-b border-ink"
             : "min-w-[260px] py-3 border-t border-b border-ink"
@@ -44,12 +106,26 @@ function SignupForm({
     );
   }
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("loading");
+    setErrorMsg("");
+    const formData = new FormData(e.currentTarget);
+    if (turnstileToken) {
+      formData.set("cf-turnstile-response", turnstileToken);
+    }
+    const result = await signupAction(formData);
+    if (result.ok) {
+      setStatus("success");
+    } else {
+      setErrorMsg(result.error ?? "Something went wrong.");
+      setStatus("error");
+    }
+  }
+
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        setSubmitted(true);
-      }}
+      onSubmit={handleSubmit}
       className={`flex flex-col ${mobile ? "gap-2.5" : "gap-2"}`}
     >
       <label
@@ -58,6 +134,13 @@ function SignupForm({
       >
         Sign up to receive press releases
       </label>
+      <input
+        name="company"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="!absolute !w-px !h-px !p-0 !m-[-1px] !overflow-hidden ![clip:rect(0,0,0,0)] !whitespace-nowrap !border-0"
+      />
       {mobile ? (
         <>
           <input
@@ -69,37 +152,52 @@ function SignupForm({
             placeholder="you@outlet.com"
             className="h-12 px-3 border border-ink rounded-none font-sans text-[16px] text-ink bg-white"
           />
+          {turnstileSiteKey && (
+            <Turnstile siteKey={turnstileSiteKey} onToken={setTurnstileToken} />
+          )}
           <button
             type="submit"
-            className="min-h-12 px-3 border-0 rounded-none bg-ink text-white font-sans text-[12px] font-semibold tracking-[0.12em] uppercase cursor-pointer"
+            disabled={status === "loading"}
+            className="min-h-12 px-3 border-0 rounded-none bg-ink text-white font-sans text-[12px] font-semibold tracking-[0.12em] uppercase cursor-pointer disabled:opacity-50"
           >
-            Submit
+            {status === "loading" ? "Submitting…" : "Submit"}
           </button>
         </>
       ) : (
-        <div className="flex flex-wrap gap-2">
-          <input
-            id={id}
-            name="email"
-            type="email"
-            required
-            autoComplete="email"
-            placeholder="you@outlet.com"
-            className="flex-[1_1_220px] min-w-0 h-11 px-3 border border-ink rounded-none font-sans text-[15px] text-ink bg-white"
-          />
-          <button
-            type="submit"
-            className="flex-none h-11 px-[18px] border-0 rounded-none bg-ink text-white font-sans text-[12px] font-semibold tracking-[0.12em] uppercase cursor-pointer"
-          >
-            Submit
-          </button>
-        </div>
+        <>
+          <div className="flex flex-wrap gap-2">
+            <input
+              id={id}
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+              placeholder="you@outlet.com"
+              className="flex-[1_1_220px] min-w-0 h-11 px-3 border border-ink rounded-none font-sans text-[15px] text-ink bg-white"
+            />
+            <button
+              type="submit"
+              disabled={status === "loading"}
+              className="flex-none h-11 px-[18px] border-0 rounded-none bg-ink text-white font-sans text-[12px] font-semibold tracking-[0.12em] uppercase cursor-pointer disabled:opacity-50"
+            >
+              {status === "loading" ? "Submitting…" : "Submit"}
+            </button>
+          </div>
+          {turnstileSiteKey && (
+            <Turnstile siteKey={turnstileSiteKey} onToken={setTurnstileToken} />
+          )}
+        </>
+      )}
+      {status === "error" && (
+        <p role="alert" className="m-0 text-[14px] text-danger">
+          {errorMsg}
+        </p>
       )}
     </form>
   );
 }
 
-function DesktopHeader() {
+function DesktopHeader({ turnstileSiteKey }: { turnstileSiteKey?: string }) {
   const pathname = usePathname();
 
   return (
@@ -116,7 +214,7 @@ function DesktopHeader() {
           />
         </Link>
         <div className="flex-[0_1_460px] min-w-[260px]">
-          <SignupForm id="fc-list-email" />
+          <SignupForm id="fc-list-email" turnstileSiteKey={turnstileSiteKey} />
         </div>
       </div>
       <nav
@@ -148,7 +246,7 @@ function DesktopHeader() {
   );
 }
 
-function MobileHeader() {
+function MobileHeader({ turnstileSiteKey }: { turnstileSiteKey?: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -245,18 +343,22 @@ function MobileHeader() {
               })}
             </ul>
           </nav>
-          <SignupForm id="m-list-email" mobile />
+          <SignupForm id="m-list-email" mobile turnstileSiteKey={turnstileSiteKey} />
         </div>
       )}
     </header>
   );
 }
 
-export default function SiteHeader() {
+export default function SiteHeader({
+  turnstileSiteKey,
+}: {
+  turnstileSiteKey?: string;
+}) {
   return (
     <>
-      <DesktopHeader />
-      <MobileHeader />
+      <DesktopHeader turnstileSiteKey={turnstileSiteKey} />
+      <MobileHeader turnstileSiteKey={turnstileSiteKey} />
     </>
   );
 }
