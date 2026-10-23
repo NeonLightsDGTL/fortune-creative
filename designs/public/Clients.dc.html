@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fortune Creative: Clients</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#111111}a:hover{color:#5D7AA5}
+.ph{background-color:#ECEBE7;background-image:repeating-linear-gradient(135deg,rgba(17,17,17,0.07) 0 1px,transparent 1px 12px)}
+.client:hover .ph{outline:3px solid #111111;outline-offset:-3px}
+.cgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.cgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</helmet>
+<div style="width: 100%; background: #FFFFFF; color: #111111; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif">
+<dc-import name="SiteHeader" active="clients" hint-size="100%,160px"></dc-import>
+<main style="max-width: 1280px; margin: 0 auto; padding: 64px 32px 96px; box-sizing: border-box">
+<div style="padding-bottom: 24px; border-bottom: 1px solid #111111">
+<h1 style="margin: 0; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: 64px; line-height: 1; letter-spacing: -0.01em">Current and Recent Clients</h1>
+</div>
+<ul class="cgrid" style="list-style: none; margin: 40px 0 0; padding: 0; display: grid; gap: 40px 32px">
+<sc-for list="{{clients}}" as="client" hint-placeholder-count="12">
+<li>
+<a class="client" href="https://example.com" target="_blank" rel="noopener" style="display: flex; flex-direction: column; gap: 12px; color: #111111; text-decoration: none">
+<div class="ph" style="aspect-ratio: 1 / 1; width: 100%; display: flex; align-items: center; justify-content: center; color: #555555; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase">Square image</div>
+<span style="display: flex; align-items: center; justify-content: space-between; gap: 12px; font-family: Georgia, 'Times New Roman', serif; font-size: 20px; line-height: 1.25">{{client.name}}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M8 7h9v9"></path></svg></span>
+<span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">(opens client website in a new tab)</span>
+</a>
+</li>
+</sc-for>
+</ul>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2320}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const clients = [];
+    for (let i = 1; i <= 12; i++) clients.push({ name: '[Client ' + String(i).padStart(2, '0') + ']' });
+    return { clients };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fortune Creative mobile: Clients</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FFFFFF}
+.ph{background-color:#ECEBE7;background-image:repeating-linear-gradient(135deg,rgba(17,17,17,0.07) 0 1px,transparent 1px 12px)}
+</style>
+</helmet>
+<div style="width: 390px; min-height: 844px; background: #FFFFFF; color: #111111; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif">
+<dc-import name="MobileHeader" active="clients" hint-size="390px,72px"></dc-import>
+<main style="padding: 32px 20px 64px">
+<h1 style="margin: 0; padding-bottom: 16px; border-bottom: 1px solid #111111; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: 40px; line-height: 1.05">Current and Recent Clients</h1>
+<ul style="list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px">
+<sc-for list="{{clients}}" as="client" hint-placeholder-count="12">
+<li>
+<a href="https://example.com" target="_blank" rel="noopener" style="display: flex; flex-direction: column; gap: 8px; color: #111111; text-decoration: none">
+<div class="ph" style="aspect-ratio: 1 / 1; width: 100%"></div>
+<span style="display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; font-family: Georgia, 'Times New Roman', serif; font-size: 17px; line-height: 1.25">{{client.name}}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 3px"><path d="M7 17L17 7"></path><path d="M8 7h9v9"></path></svg></span>
+</a>
+</li>
+</sc-for>
+</ul>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1612}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const clients = [];
+    for (let i = 1; i <= 12; i++) clients.push({ name: '[Client ' + String(i).padStart(2, '0') + ']' });
+    return { clients };
+  }
+}
+</script>
+</body>
+</html>

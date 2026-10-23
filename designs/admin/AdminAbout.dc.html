@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin: About</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#F4F4F2}
+a{color:#111111}a:hover{color:#5D7AA5}
+.ph{background-color:#ECEBE7;background-image:repeating-linear-gradient(135deg,rgba(17,17,17,0.07) 0 1px,transparent 1px 12px)}
+.side a:hover{color:#FFFFFF;background:#2A2A2A}
+.tb:hover{background:#111111;color:#FFFFFF}
+input:focus,.bio:focus{outline:2px solid #5D7AA5;outline-offset:1px}
+</style>
+</helmet>
+<div style="width: 100%; min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F4F2; color: #111111; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif">
+<nav class="side" aria-label="Admin" style="flex: 1 1 220px; max-width: 260px; box-sizing: border-box; padding: 24px 16px; background: #111111; color: #FFFFFF; display: flex; flex-direction: column; gap: 28px">
+<img src="/_blob/ad553d654b0f80c357dbf3fe7ea8af4e" alt="Fortune Creative" style="display: block; width: 180px; height: auto">
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px">
+<li><a href="AdminCarousel.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: #E6E6E6; text-decoration: none; font-size: 15px">Home</a></li>
+<li><a href="AdminClients.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: #E6E6E6; text-decoration: none; font-size: 15px">Clients</a></li>
+<li><a href="AdminReleases.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: #E6E6E6; text-decoration: none; font-size: 15px">Releases</a></li>
+<li><a href="AdminCoverageList.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: #E6E6E6; text-decoration: none; font-size: 15px">Coverage</a></li>
+<li><a href="AdminAbout.dc.html" aria-current="page" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; background: #FFFFFF; color: #111111; text-decoration: none; font-size: 15px; font-weight: 600">About</a></li>
+</ul>
+<a href="Main.dc.html" style="margin-top: auto; display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: #E6E6E6; text-decoration: none; font-size: 14px">View live site</a>
+</nav>
+<main style="flex: 999 1 640px; min-width: 0; box-sizing: border-box; padding: 40px 40px 64px">
+<form onSubmit="{{save}}" style="max-width: 1180px; display: flex; flex-direction: column; gap: 28px">
+<header style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: 44px; line-height: 1">About</h1>
+<p style="margin: 0; font-size: 15px; color: #4A4A4A">Dan's photo, photo credit, and bio on the About page.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<span role="status" style="font-size: 14px; color: #4A4A4A; margin-right: 6px">{{statusText}}</span>
+<a href="About.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 1px solid #111111; color: #111111; text-decoration: none; font-size: 14px; font-weight: 600">View page</a>
+<button type="submit" style="min-height: 44px; padding: 0 22px; border: 0; border-radius: 0; background: #111111; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Save changes</button>
+</div>
+</header>
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 28px">
+<div style="flex: 1 1 300px; max-width: 380px; box-sizing: border-box; padding: 24px; background: #FFFFFF; border: 1px solid #D9D9D6; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<p style="margin: 0; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase">Photo</p>
+<div class="ph" style="aspect-ratio: 4 / 5; width: 100%; display: flex; align-items: center; justify-content: center; color: #555555; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase">Current photo</div>
+<label for="ab-photo" style="font-size: 14px; font-weight: 600">Replace photo</label>
+<input id="ab-photo" type="file" accept="image/*" onChange="{{markDirty}}" style="font-family: inherit; font-size: 14px">
+<p style="margin: 0; font-size: 13px; line-height: 1.45; color: #555555">Portrait (taller than wide), at least 1200 × 1500 px.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="ab-photo-credit" style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase">Photo credit</label>
+<input id="ab-photo-credit" type="text" value="{{credit}}" onChange="{{setCredit}}" placeholder="Photo by…" style="height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #111111; border-radius: 0; font-family: inherit; font-size: 15px; background: #FFFFFF; color: #111111">
+</div>
+</div>
+<div style="flex: 999 1 520px; min-width: 0; box-sizing: border-box; padding: 28px; background: #FFFFFF; border: 1px solid #D9D9D6">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<p id="ab-bio-label" style="margin: 0; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase">Bio</p>
+<div role="toolbar" aria-label="Formatting" style="display: flex; flex-wrap: wrap; gap: 4px; padding: 6px; border: 1px solid #111111; border-bottom: 0; background: #F4F4F2">
+<button class="tb" type="button" aria-label="Bold" style="width: 44px; height: 40px; border: 0; background: transparent; cursor: pointer; font-family: inherit; font-size: 15px; font-weight: 700">B</button>
+<button class="tb" type="button" aria-label="Italic" style="width: 44px; height: 40px; border: 0; background: transparent; cursor: pointer; font-family: Georgia, 'Times New Roman', serif; font-size: 17px; font-style: italic">I</button>
+<button class="tb" type="button" aria-label="Insert link" style="width: 44px; height: 40px; border: 0; background: transparent; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"></path><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg></button>
+</div>
+<div class="bio" contentEditable="true" role="textbox" aria-multiline="true" aria-labelledby="ab-bio-label" onInput="{{markDirty}}" style="min-height: 600px; box-sizing: border-box; padding: 16px; border: 1px solid #111111; background: #FFFFFF; font-family: Georgia, 'Times New Roman', serif; font-size: 18px; line-height: 1.6; color: #111111">
+<p style="margin: 0 0 14px"><strong>Dan Fortune</strong> has enjoyed a varied career in arts publicity for over a decade.</p>
+<p style="margin: 0 0 14px">Current projects include publicity for Ghostlight Records – the Grammy Award winning label behind Broadway albums <em>The Book of Mormon</em>, <em>Newsies</em> and the Tony Award winning shows <em>A Gentleman’s Guide to Love and Murder</em>, <em>The Bridges of Madison County</em> and <em>Beautiful: The Carole King Musical</em> – plus albums from John Schneider and Tom Wopat (celebrating 35 years of “The Dukes of Hazzard”), Laura Benanti (“Nashville” on ABC-TV, Tony Award winner for <em>Gypsy</em>), Maureen McGovern (three-time Grammy Award nominee) and Tituss Burgess (“30 Rock,” <em>Jersey Boys</em>). Other projects include the short film “Grind” starring Anthony Rapp and the movie soundtrack to “The Last Five Years” starring Anna Kendrick and Jeremy Jordan.</p>
+<p style="margin: 0 0 14px">Previous national album campaigns include Jane Krakowski, Ann Hampton Callaway, Steven Pasquale, Megan Mullally, Tony DeSare, Diane Schuur, Keely Smith, a number of Broadway cast recordings and the premiere release of the private home recordings of Stephen Sondheim. Solo concert engagements include Alan Cumming, Patti LuPone, Brian Stokes Mitchell, Petula Clark, Betty Buckley, Glen Campbell, Crystal Gayle, Jo Dee Messina, Brooke Shields, Donny Osmond and Diahann Carroll.</p>
+<p style="margin: 0 0 14px">As Michael Feinstein’s personal publicist for over 10 years, Dan promoted his Grammy nominated albums, his PBS series “Michael Feinstein’s American Songbook,” his book “The Gershwins and Me” from Simon &amp; Schuster, and his NPR program “Song Travels” in addition to his concerts with symphonies around the world. Dan now serves on the board of Feinstein’s Great American Songbook Foundation.</p>
+<p style="margin: 0 0 14px">In addition, Dan has been personal press representative for Broadway talent such as Darlene Love (2011 Rock Hall of Fame Inductee) for her run in <em>Hairspray</em>, Tony Award nominee Haydn Gwynne in <em>Billy Elliot</em>, Tony Award nominee Felicia Felds in <em>The Color Purple</em> and Maria Friedman in <em>The Woman in White</em>. Other projects include shows both on and off Broadway and productions at the New York Musical Theater Festival, 59E59 Theaters, and other venues and festivals throughout the city.</p>
+<p style="margin: 0 0 14px">Dan represented the York Theater Company for several years and worked on the Broadway productions of <em>George Gershwin Alone</em> and <em>The Gathering</em> with Hal Linden. New York venues include Feinstein’s at the Regency, Café Carlyle, 54 Below and The Algonquin Hotel’s Oak Room, in addition to jazz rooms like Birdland, The Blue Note and Jazz Standard.</p>
+<p style="margin: 0 0 14px">Other major projects include the 2005 Harold Arlen Centennial, the 25th Anniversary season of The Philly Pops, the Johnny Mercer Foundation, and the 2001 Tony Awards hosted by Nathan Lane and Matthew Broderick.</p>
+<p style="margin: 0 0 14px">He served as Associate Producer of “Radio Deluxe,” John Pizzarelli’s nationally-syndicated radio program, and is the producer of the all-star concert “Night of a Thousand Judys.” The evening honors Judy Garland as a benefit for the Ali Forney Center – which provides housing for homeless LGBT youth – which celebrated the 10th annual event in June 2022.</p>
+<p style="margin: 0 0 14px">Dan formed Fortune Creative in March 2013.</p>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.45; color: #555555">Use Italic for show titles. The first mention of Dan's name is bold.</p>
+</div>
+</div>
+</div>
+</form>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1830}}'>
+class Component extends DCLogic {
+  cur() {
+    return Object.assign({ credit: '[Photo credit]', status: 'All changes saved' }, this.state || {});
+  }
+  renderVals() {
+    const s = this.cur();
+    return {
+      credit: s.credit,
+      statusText: s.status,
+      setCredit: (e) => this.setState({ credit: e.target.value, status: 'Unsaved changes' }),
+      markDirty: () => { if (this.cur().status !== 'Unsaved changes') this.setState({ status: 'Unsaved changes' }); },
+      save: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ status: 'Saved. The About page is updated.' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

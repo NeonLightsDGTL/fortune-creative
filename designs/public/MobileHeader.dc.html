@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fortune Creative mobile header</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+</style>
+</helmet>
+<header style="width: 100%; background: #FFFFFF; color: #111111; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; border-bottom: 4px double #111111">
+<div style="height: 68px; box-sizing: border-box; padding: 0 12px 0 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px">
+<a href="MobileHome.dc.html" style="display: flex; align-items: center; min-height: 44px"><img src="/_blob/cb7cb2ba858c28c9c73fed16b76a7853" alt="Fortune Creative home" style="display: block; width: 140px; height: auto"></a>
+<button type="button" aria-label="{{toggleLabel}}" aria-expanded="{{expanded}}" aria-controls="m-menu" onClick="{{toggle}}" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border: 0; background: transparent; color: #111111; cursor: pointer">
+<sc-if value="{{closed}}" hint-placeholder-val="{{ true }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 7h18"></path><path d="M3 12h18"></path><path d="M3 17h18"></path></svg></sc-if>
+<sc-if value="{{open}}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14"></path><path d="M19 5L5 19"></path></svg></sc-if>
+</button>
+</div>
+<sc-if value="{{open}}" hint-placeholder-val="{{ false }}">
+<div id="m-menu" style="min-height: 700px; box-sizing: border-box; padding: 8px 20px 40px; border-top: 1px solid #111111; display: flex; flex-direction: column; gap: 32px">
+<nav aria-label="Main">
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+<sc-for list="{{links}}" as="link" hint-placeholder-count="6">
+<li style="border-bottom: 1px solid #D9D9D6">
+<sc-if value="{{link.current}}" hint-placeholder-val="{{ false }}"><a href="{{link.href}}" aria-current="page" style="display: flex; align-items: center; justify-content: space-between; min-height: 60px; color: #5D7AA5; text-decoration: none; font-family: Georgia, 'Times New Roman', serif; font-size: 28px">{{link.label}}<span aria-hidden="true" style="width: 8px; height: 8px; background: #5D7AA5"></span></a></sc-if>
+<sc-if value="{{link.other}}" hint-placeholder-val="{{ true }}"><a href="{{link.href}}" style="display: flex; align-items: center; min-height: 60px; color: #111111; text-decoration: none; font-family: Georgia, 'Times New Roman', serif; font-size: 28px">{{link.label}}</a></sc-if>
+</li>
+</sc-for>
+</ul>
+</nav>
+<sc-if value="{{showForm}}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{submit}}" style="display: flex; flex-direction: column; gap: 10px">
+<label for="m-list-email" style="font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase">Sign up to receive press releases</label>
+<input id="m-list-email" type="email" required="required" autocomplete="email" placeholder="you@outlet.com" style="height: 48px; box-sizing: border-box; padding: 0 12px; border: 1px solid #111111; border-radius: 0; font-family: inherit; font-size: 16px; color: #111111; background: #FFFFFF">
+<button type="submit" style="min-height: 48px; padding: 8px 12px; border: 0; border-radius: 0; background: #111111; color: #FFFFFF; font-family: inherit; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer">Submit</button>
+</form>
+</sc-if>
+<sc-if value="{{submitted}}" hint-placeholder-val="{{ false }}">
+<p role="status" style="margin: 0; padding: 14px 0; border-top: 1px solid #111111; border-bottom: 1px solid #111111; font-size: 16px; line-height: 1.4">Thank you for signing up for the Fortune Creative press release distribution list.</p>
+</sc-if>
+</div>
+</sc-if>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","options":["home","clients","releases","coverage","about","contact"],"default":"home"},"startOpen":{"editor":"boolean","default":false},"$preview":{"width":390,"height":72}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const active = this.props.active ?? 'home';
+    const st = this.state || {};
+    const open = st.open === undefined ? !!this.props.startOpen : st.open;
+    const links = [
+      { key: 'home', label: 'Home', href: 'MobileHome.dc.html' },
+      { key: 'clients', label: 'Clients', href: 'MobileClients.dc.html' },
+      { key: 'releases', label: 'Releases', href: 'MobileReleases.dc.html' },
+      { key: 'coverage', label: 'Coverage', href: 'MobileCoverage.dc.html' },
+      { key: 'about', label: 'About', href: 'MobileAbout.dc.html' },
+      { key: 'contact', label: 'Contact', href: 'MobileContact.dc.html' }
+    ].map((l) => ({ ...l, current: l.key === active, other: l.key !== active }));
+    return {
+      links,
+      open,
+      closed: !open,
+      expanded: open ? 'true' : 'false',
+      toggleLabel: open ? 'Close menu' : 'Open menu',
+      toggle: () => this.setState({ open: !open }),
+      submitted: !!st.submitted,
+      showForm: !st.submitted,
+      submit: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ submitted: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

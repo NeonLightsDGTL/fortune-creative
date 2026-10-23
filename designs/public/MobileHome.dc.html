@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fortune Creative mobile: Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#FFFFFF}
+.ph{background-color:#ECEBE7;background-image:repeating-linear-gradient(135deg,rgba(17,17,17,0.07) 0 1px,transparent 1px 12px)}
+</style>
+</helmet>
+<div style="width: 390px; min-height: 844px; background: #FFFFFF; color: #111111; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif">
+<dc-import name="MobileHeader" active="home" hint-size="390px,72px"></dc-import>
+<main style="padding: 0 20px 64px">
+<h1 style="margin: 0; padding: 32px 0 24px; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: 32px; line-height: 1.12; letter-spacing: -0.01em; text-wrap: balance">A press agency for artists, productions, and organizations across Broadway and music.</h1>
+<section aria-roledescription="carousel" aria-label="Featured clients" style="display: flex; flex-direction: column; gap: 10px">
+<div class="ph" role="group" aria-roledescription="slide" aria-label="{{slideLabel}}" onTouchStart="{{touchStart}}" onTouchEnd="{{touchEnd}}" style="margin: 0 -20px; aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; color: #555555; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase">Featured image {{slideNum}} of {{slideTotal}}</div>
+<p aria-live="polite" style="margin: 0; font-size: 14px; line-height: 1.4"><a href="https://example.com" target="_blank" rel="noopener" style="color: #111111; font-weight: 600; text-decoration: none">{{slideClient}}</a><span style="color: #4A4A4A">, {{slideWork}}</span></p>
+<div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid #111111">
+<div style="display: flex; align-items: center">
+<sc-for list="{{dots}}" as="d" hint-placeholder-count="5">
+<sc-if value="{{d.active}}" hint-placeholder-val="{{ false }}"><button type="button" aria-label="Show slide {{d.n}}" aria-current="true" onClick="{{d.go}}" style="width: 30px; height: 44px; display: flex; align-items: center; justify-content: center; border: 0; background: transparent; cursor: pointer"><span style="width: 18px; height: 3px; background: #111111"></span></button></sc-if>
+<sc-if value="{{d.inactive}}" hint-placeholder-val="{{ true }}"><button type="button" aria-label="Show slide {{d.n}}" onClick="{{d.go}}" style="width: 30px; height: 44px; display: flex; align-items: center; justify-content: center; border: 0; background: transparent; cursor: pointer"><span style="width: 18px; height: 3px; background: #BDBDB8"></span></button></sc-if>
+</sc-for>
+</div>
+<div style="display: flex; gap: 6px">
+<button type="button" aria-label="Previous slide" onClick="{{prev}}" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 1px solid #111111; background: #FFFFFF; color: #111111; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
+<button type="button" aria-label="Next slide" onClick="{{next}}" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 1px solid #111111; background: #FFFFFF; color: #111111; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+<button type="button" aria-label="{{pauseLabel}}" onClick="{{togglePause}}" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 1px solid #111111; background: #FFFFFF; color: #111111; cursor: pointer">
+<sc-if value="{{playing}}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="5" height="16"></rect><rect x="14" y="4" width="5" height="16"></rect></svg></sc-if>
+<sc-if value="{{paused}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l14 8-14 8z"></path></svg></sc-if>
+</button>
+</div>
+</div>
+</section>
+<section aria-labelledby="m-recent-releases" style="margin-top: 48px; display: flex; flex-direction: column; gap: 24px">
+<h2 id="m-recent-releases" style="margin: 0; padding-bottom: 12px; border-bottom: 1px solid #111111; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: 32px; line-height: 1">Recent Releases</h2>
+<sc-for list="{{releases}}" as="r" hint-placeholder-count="4">
+<article style="display: flex; flex-direction: column; gap: 10px">
+<a href="MobileRelease.dc.html" tabindex="-1" aria-hidden="true" class="ph" style="aspect-ratio: 16 / 9; width: 100%"></a>
+<p style="margin: 0; display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase"><span style="color: #5D7AA5">{{r.category}}</span><time style="color: #4A4A4A">{{r.date}}</time></p>
+<h3 style="margin: 0; font-family: Georgia, 'Times New Roman', serif; font-weight: 500; font-size: 21px; line-height: 1.25"><a href="MobileRelease.dc.html" style="color: inherit; text-decoration: none">{{r.headline}}</a></h3>
+</article>
+</sc-for>
+<a href="MobileReleases.dc.html" style="display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; border: 1px solid #111111; color: #111111; text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase">Read all releases<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></a>
+</section>
+<section aria-labelledby="m-recent-coverage" style="margin-top: 56px; display: flex; flex-direction: column; gap: 24px">
+<h2 id="m-recent-coverage" style="margin: 0; padding-bottom: 12px; border-bottom: 1px solid #111111; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: 32px; line-height: 1">Recent Coverage</h2>
+<sc-for list="{{coverage}}" as="c" hint-placeholder-count="4">
+<article style="display: flex; flex-direction: column; gap: 10px">
+<a href="https://example.com" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true" class="ph" style="aspect-ratio: 16 / 9; width: 100%"></a>
+<p style="margin: 0; display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase"><span style="color: #5D7AA5">{{c.category}}</span><time style="color: #4A4A4A">{{c.date}}</time></p>
+<p style="margin: 0; font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 16px">{{c.outlet}}</p>
+<h3 style="margin: 0; font-family: Georgia, 'Times New Roman', serif; font-weight: 500; font-size: 21px; line-height: 1.25"><a href="https://example.com" target="_blank" rel="noopener" style="color: inherit; text-decoration: none">{{c.headline}}</a></h3>
+</article>
+</sc-for>
+<a href="MobileCoverage.dc.html" style="display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; border: 1px solid #111111; color: #111111; text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase">Read all coverage<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></a>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":3664}}'>
+class Component extends DCLogic {
+  cur() {
+    return Object.assign({ idx: 0, paused: false }, this.state || {});
+  }
+  slides() {
+    return [1, 2, 3, 4, 5].map((n) => ({ client: '[Client name ' + n + ']', work: '[Show, album, or project]' }));
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      const s = this.cur();
+      if (!s.paused) this.setState({ idx: (s.idx + 1) % this.slides().length });
+    }, 6000);
+  }
+  componentWillUnmount() {
+    if (this.timer) clearInterval(this.timer);
+  }
+  renderVals() {
+    const s = this.cur();
+    const slides = this.slides();
+    const total = slides.length;
+    const go = (i) => this.setState({ idx: (i + total) % total });
+    const cur = slides[s.idx];
+    return {
+      slideNum: s.idx + 1,
+      slideTotal: total,
+      slideLabel: (s.idx + 1) + ' of ' + total,
+      slideClient: cur.client,
+      slideWork: cur.work,
+      playing: !s.paused,
+      paused: s.paused,
+      pauseLabel: s.paused ? 'Play slideshow' : 'Pause slideshow',
+      togglePause: () => this.setState({ paused: !this.cur().paused }),
+      prev: () => go(this.cur().idx - 1),
+      next: () => go(this.cur().idx + 1),
+      touchStart: (e) => { this._tx = e.touches && e.touches[0] ? e.touches[0].clientX : null; },
+      touchEnd: (e) => {
+        const t = e.changedTouches && e.changedTouches[0];
+        if (this._tx == null || !t) return;
+        const dx = t.clientX - this._tx;
+        this._tx = null;
+        if (Math.abs(dx) > 40) go(this.cur().idx + (dx < 0 ? 1 : -1));
+      },
+      dots: slides.map((x, i) => ({ n: i + 1, active: i === s.idx, inactive: i !== s.idx, go: () => go(i) })),
+      releases: [
+        { category: 'Broadway', date: 'October 1, 2026', headline: '[Show Title] Announces Broadway Opening Night at the [Theatre Name]' },
+        { category: 'Music', date: 'September 24, 2026', headline: '[Artist Name] Releases New Album “[Album Title]”' },
+        { category: 'Awards', date: 'September 15, 2026', headline: '[Production] Receives [Number] [Award] Nominations' },
+        { category: 'Off-Broadway', date: 'September 3, 2026', headline: '[Show Title] Extends Run at [Venue] Through [Date]' }
+      ],
+      coverage: [
+        { category: 'Interview', outlet: '[Outlet Name]', date: 'September 30, 2026', headline: '[Artist Name] on the Making of “[Album Title]”' },
+        { category: 'Review', outlet: '[Outlet Name]', date: 'September 22, 2026', headline: 'Review: [Show Title] at the [Theatre Name]' },
+        { category: 'Roundup', outlet: '[Outlet Name]', date: 'September 12, 2026', headline: '[Number] Shows to See This Fall, Including [Show Title]' },
+        { category: 'Feature', outlet: '[Outlet Name]', date: 'September 2, 2026', headline: 'Inside the Rehearsal Room of [Show Title]' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

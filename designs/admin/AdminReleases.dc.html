@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin: Releases</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;background:#F4F4F2}
+a{color:#111111}a:hover{color:#5D7AA5}
+.ph{background-color:#ECEBE7;background-image:repeating-linear-gradient(135deg,rgba(17,17,17,0.07) 0 1px,transparent 1px 12px)}
+.side a:hover{color:#FFFFFF;background:#2A2A2A}
+.ib:hover{background:#111111;color:#FFFFFF}
+</style>
+</helmet>
+<div style="width: 100%; min-height: 100vh; display: flex; flex-wrap: wrap; background: #F4F4F2; color: #111111; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif">
+<nav class="side" aria-label="Admin" style="flex: 1 1 220px; max-width: 260px; box-sizing: border-box; padding: 24px 16px; background: #111111; color: #FFFFFF; display: flex; flex-direction: column; gap: 28px">
+<img src="/_blob/ad553d654b0f80c357dbf3fe7ea8af4e" alt="Fortune Creative" style="display: block; width: 180px; height: auto">
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px">
+<li><a href="AdminCarousel.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: #E6E6E6; text-decoration: none; font-size: 15px">Home</a></li>
+<li><a href="AdminClients.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: #E6E6E6; text-decoration: none; font-size: 15px">Clients</a></li>
+<li><a href="AdminReleases.dc.html" aria-current="page" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; background: #FFFFFF; color: #111111; text-decoration: none; font-size: 15px; font-weight: 600">Releases</a></li>
+<li><a href="AdminCoverageList.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: #E6E6E6; text-decoration: none; font-size: 15px">Coverage</a></li>
+<li><a href="AdminAbout.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: #E6E6E6; text-decoration: none; font-size: 15px">About</a></li>
+</ul>
+<a href="Main.dc.html" style="margin-top: auto; display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: #E6E6E6; text-decoration: none; font-size: 14px">View live site</a>
+</nav>
+<main style="flex: 999 1 640px; min-width: 0; box-sizing: border-box; padding: 40px 40px 64px">
+<div style="max-width: 1100px; display: flex; flex-direction: column; gap: 24px">
+<header style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 32px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: 44px; line-height: 1">Releases</h1>
+<p style="margin: 0; font-size: 15px; color: #4A4A4A">Everything published and in draft, newest first. Click a headline to edit it.</p>
+</div>
+<a href="AdminRelease.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 22px; background: #111111; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600">New Release</a>
+</header>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px">
+<div role="group" aria-label="Filter" style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+<sc-if value="{{t.active}}" hint-placeholder-val="{{ false }}"><button type="button" aria-pressed="{{t.pressed}}" onClick="{{t.pick}}" style="min-height: 40px; padding: 0 16px; border: 1px solid #111111; background: #111111; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">{{t.label}}</button></sc-if>
+<sc-if value="{{t.inactive}}" hint-placeholder-val="{{ true }}"><button type="button" aria-pressed="{{t.pressed}}" onClick="{{t.pick}}" style="min-height: 40px; padding: 0 16px; border: 1px solid #D9D9D6; background: #FFFFFF; color: #111111; font-family: inherit; font-size: 14px; cursor: pointer">{{t.label}}</button></sc-if>
+</sc-for>
+</div>
+<p role="status" style="margin: 0; min-height: 20px; display: flex; align-items: center; gap: 10px; font-size: 14px">{{status}}<sc-if value="{{hasUndo}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{undoDelete}}" style="min-height: 36px; padding: 0 12px; border: 1px solid #111111; background: #FFFFFF; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Undo</button></sc-if></p>
+</div>
+<section aria-label="Releases list" style="background: #FFFFFF; border: 1px solid #D9D9D6">
+<div aria-hidden="true" style="display: flex; gap: 16px; padding: 12px 20px; border-bottom: 1px solid #D9D9D6; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #4A4A4A"><span style="flex: 1 1 auto; padding-left: 88px">Headline</span><span style="flex: 0 0 130px">Tag</span><span style="flex: 0 0 150px">Date</span><span style="flex: 0 0 100px">Status</span><span style="flex: 0 0 150px">Actions</span></div>
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+<li>
+<sc-if value="{{r.normal}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; align-items: center; gap: 16px; padding: 12px 20px; border-bottom: 1px solid #ECEBE7">
+<div class="ph" aria-hidden="true" style="flex: none; width: 72px; height: 54px"></div>
+<div style="flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<a href="AdminRelease.dc.html" style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; line-height: 1.3; color: #111111; text-decoration: none">{{r.headline}}</a>
+<sc-if value="{{r.hasOutlet}}" hint-placeholder-val="{{ false }}"><span style="font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 14px; color: #4A4A4A">{{r.outlet}}</span></sc-if>
+</div>
+<span style="flex: 0 0 130px; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #5D7AA5">{{r.tag}}</span>
+<span style="flex: 0 0 150px; font-size: 14px; color: #4A4A4A">{{r.date}}</span>
+<span style="flex: 0 0 100px"><sc-if value="{{r.isPublished}}" hint-placeholder-val="{{ true }}"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #5D7AA5"></span>Published</span></sc-if><sc-if value="{{r.isDraft}}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #4A4A4A"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid #4A4A4A; box-sizing: border-box"></span>Draft</span></sc-if></span>
+<div style="flex: 0 0 150px; display: flex; gap: 6px">
+<a class="ib" href="AdminRelease.dc.html" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; min-height: 40px; padding: 0; border: 1px solid #D9D9D6; color: #111111; text-decoration: none; font-size: 14px" aria-label="Edit {{r.headline}}" title="Edit"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"></path><path d="M13.5 6.5l4 4"></path></svg></a>
+<a class="ib" href="ReleaseDetail.dc.html" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; min-height: 40px; padding: 0; border: 1px solid #D9D9D6; color: #111111; text-decoration: none; font-size: 14px" aria-label="View {{r.headline}}" title="View"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>
+<button class="ib" type="button" onClick="{{r.askDelete}}" style="display: inline-flex; align-items: center; justify-content: center; width: 40px; min-height: 40px; padding: 0; border: 1px solid #D9D9D6; background: #FFFFFF; color: #A3152A; font-family: inherit; font-size: 14px; cursor: pointer" aria-label="Delete {{r.headline}}" title="Delete"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"></path><path d="M9 7V4h6v3"></path><path d="M6 7l1 13h10l1-13"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg></button>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{r.confirming}}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; padding: 14px 20px; background: #FBF3F4; border-bottom: 1px solid #ECEBE7">
+<p style="margin: 0; flex: 1 1 260px; font-size: 14px; line-height: 1.45">Delete “{{r.headline}}”? It will be removed from the website.</p>
+<button type="button" onClick="{{r.doDelete}}" style="min-height: 44px; padding: 0 16px; border: 0; background: #A3152A; color: #FFFFFF; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Delete release</button>
+<button type="button" onClick="{{r.cancelDelete}}" style="min-height: 44px; padding: 0 16px; border: 1px solid #111111; background: #FFFFFF; color: #111111; font-family: inherit; font-size: 14px; cursor: pointer">Keep</button>
+</div>
+</sc-if>
+</li>
+</sc-for>
+</ul>
+<sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 32px 20px; font-size: 15px; color: #4A4A4A">Nothing here yet.</p></sc-if>
+</section>
+<p style="margin: 0; font-size: 13px; color: #555555">Drafts are only visible here. View opens the page as visitors see it.</p>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  defaults() {
+    if (!this._d) this._d = { items: [{"id": "r1", "headline": "[Show Title] Announces Fall Casting", "tag": "Broadway", "date": "October 10, 2026", "status": "Draft", "outlet": ""}, {"id": "r2", "headline": "[Show Title] Announces Broadway Opening Night at the [Theatre Name]", "tag": "Broadway", "date": "October 1, 2026", "status": "Published", "outlet": ""}, {"id": "r3", "headline": "[Artist Name] Releases New Album “[Album Title]”", "tag": "Music", "date": "September 24, 2026", "status": "Published", "outlet": ""}, {"id": "r4", "headline": "[Artist Name] Announces Holiday Concert at [Venue]", "tag": "Announcement", "date": "September 18, 2026", "status": "Draft", "outlet": ""}, {"id": "r5", "headline": "[Production] Receives [Number] [Award] Nominations", "tag": "Awards", "date": "September 15, 2026", "status": "Published", "outlet": ""}, {"id": "r6", "headline": "[Show Title] Extends Run at [Venue] Through [Date]", "tag": "Off-Broadway", "date": "September 3, 2026", "status": "Published", "outlet": ""}], filter: 'all', confirmId: null, undo: null, status: '' };
+    return this._d;
+  }
+  cur() { return Object.assign({}, this.defaults(), this.state || {}); }
+  renderVals() {
+    const s = this.cur();
+    const all = s.items;
+    const nPub = all.filter((x) => x.status === 'Published').length;
+    const nDraft = all.length - nPub;
+    const shown = all.filter((x) => s.filter === 'all' || (s.filter === 'published' ? x.status === 'Published' : x.status === 'Draft'));
+    const tab = (key, label) => ({ label, active: s.filter === key, inactive: s.filter !== key, pressed: s.filter === key ? 'true' : 'false', pick: () => this.setState({ filter: key, confirmId: null }) });
+    return {
+      tabs: [tab('all', 'All (' + all.length + ')'), tab('published', 'Published (' + nPub + ')'), tab('draft', 'Drafts (' + nDraft + ')')],
+      status: s.status,
+      hasUndo: !!s.undo,
+      isEmpty: shown.length === 0,
+      undoDelete: () => {
+        const st = this.cur(); if (!st.undo) return;
+        const arr = st.items.slice(); arr.splice(st.undo.index, 0, st.undo.item);
+        this.setState({ items: arr, undo: null, status: 'Restored.' });
+      },
+      rows: shown.map((x) => ({
+        headline: x.headline, tag: x.tag, date: x.date, status: x.status, outlet: x.outlet, hasOutlet: !!x.outlet,
+        isPublished: x.status === 'Published', isDraft: x.status !== 'Published',
+        confirming: s.confirmId === x.id, normal: s.confirmId !== x.id,
+        askDelete: () => this.setState({ confirmId: x.id }),
+        cancelDelete: () => this.setState({ confirmId: null }),
+        doDelete: () => {
+          const st = this.cur(); const idx = st.items.findIndex((y) => y.id === x.id);
+          this.setState({ items: st.items.filter((y) => y.id !== x.id), confirmId: null, undo: { item: x, index: idx }, status: 'Deleted “' + x.headline + '”.' });
+        }
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

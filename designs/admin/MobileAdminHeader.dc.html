@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin mobile header</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+</style>
+</helmet>
+<header style="width: 100%; background: #111111; color: #FFFFFF; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif">
+<div style="height: 64px; box-sizing: border-box; padding: 0 8px 0 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<img src="/_blob/ad553d654b0f80c357dbf3fe7ea8af4e" alt="Fortune Creative" style="display: block; width: 120px; height: auto">
+<span style="flex: 1 1 auto; font-size: 15px; font-weight: 600; text-align: right">{{sectionLabel}}</span>
+<button type="button" aria-label="{{toggleLabel}}" aria-expanded="{{expanded}}" onClick="{{toggle}}" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border: 0; background: transparent; color: #FFFFFF; cursor: pointer">
+<sc-if value="{{closed}}" hint-placeholder-val="{{ true }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 7h18"></path><path d="M3 12h18"></path><path d="M3 17h18"></path></svg></sc-if>
+<sc-if value="{{open}}" hint-placeholder-val="{{ false }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14"></path><path d="M19 5L5 19"></path></svg></sc-if>
+</button>
+</div>
+<sc-if value="{{open}}" hint-placeholder-val="{{ false }}">
+<nav aria-label="Admin" style="padding: 4px 16px 20px; border-top: 1px solid #333333">
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+<sc-for list="{{links}}" as="l" hint-placeholder-count="5">
+<li style="border-bottom: 1px solid #2A2A2A">
+<sc-if value="{{l.current}}" hint-placeholder-val="{{ false }}"><a href="{{l.href}}" aria-current="page" style="display: flex; align-items: center; min-height: 52px; color: #FFFFFF; text-decoration: none; font-size: 17px; font-weight: 600">{{l.label}}</a></sc-if>
+<sc-if value="{{l.other}}" hint-placeholder-val="{{ true }}"><a href="{{l.href}}" style="display: flex; align-items: center; min-height: 52px; color: #CFCFCF; text-decoration: none; font-size: 17px">{{l.label}}</a></sc-if>
+</li>
+</sc-for>
+<li><a href="MobileHome.dc.html" style="display: flex; align-items: center; min-height: 52px; color: #CFCFCF; text-decoration: none; font-size: 15px">View live site</a></li>
+</ul>
+</nav>
+</sc-if>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","options":["carousel","clients","releases","coverage","about"],"default":"clients"},"$preview":{"width":390,"height":64}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const active = this.props.active ?? 'clients';
+    const open = !!(this.state && this.state.open);
+    const all = [
+      { key: 'carousel', label: 'Home', href: 'MobileAdminCarousel.dc.html' },
+      { key: 'clients', label: 'Clients', href: 'MobileAdminClients.dc.html' },
+      { key: 'releases', label: 'Releases', href: 'MobileAdminReleases.dc.html' },
+      { key: 'coverage', label: 'Coverage', href: 'MobileAdminCoverageList.dc.html' },
+      { key: 'about', label: 'About', href: 'MobileAdminAbout.dc.html' }
+    ];
+    const links = all.map((l) => ({ ...l, current: l.key === active, other: l.key !== active }));
+    const cur = all.find((l) => l.key === active) || all[1];
+    return {
+      links,
+      open,
+      closed: !open,
+      sectionLabel: cur.label,
+      expanded: open ? 'true' : 'false',
+      toggleLabel: open ? 'Close admin menu' : 'Open admin menu',
+      toggle: () => this.setState({ open: !open })
+    };
+  }
+}
+</script>
+</body>
+</html>
