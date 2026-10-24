@@ -35,7 +35,7 @@ export default function EmailDialog() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="mt-[10px] self-start min-h-[48px] px-6 border-0 bg-ink text-white font-sans text-[13px] font-semibold tracking-[0.14em] uppercase cursor-pointer"
+        className="mt-[10px] self-start min-h-[48px] px-6 border border-accent bg-white text-accent font-sans text-[13px] font-semibold tracking-[0.14em] uppercase cursor-pointer hover:bg-accent hover:text-white"
       >
         Email me
       </button>
@@ -88,7 +88,7 @@ export default function EmailDialog() {
               <div className="flex flex-wrap gap-[10px]">
                 <button
                   type="submit"
-                  className="flex-[1_1_auto] min-h-[48px] px-[22px] border-0 bg-ink text-white font-sans text-[13px] font-semibold tracking-[0.14em] uppercase cursor-pointer"
+                  className="flex-[1_1_auto] min-h-[48px] px-[22px] border-0 bg-accent text-white font-sans text-[13px] font-semibold tracking-[0.14em] uppercase cursor-pointer hover:bg-white hover:text-accent hover:outline hover:outline-1 hover:outline-accent"
                 >
                   Open email
                 </button>

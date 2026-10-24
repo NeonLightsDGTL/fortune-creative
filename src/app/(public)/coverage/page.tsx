@@ -112,7 +112,7 @@ export default async function CoveragePage({
                   href={c.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-[6px] max-md:mt-0 inline-flex max-md:flex items-center justify-center gap-[10px] min-h-[44px] max-md:min-h-[48px] px-5 border border-ink text-ink no-underline text-[13px] font-semibold tracking-[0.14em] uppercase hover:bg-ink hover:text-white max-md:w-full"
+                  className="mt-[6px] max-md:mt-0 inline-flex max-md:flex items-center justify-center gap-[10px] min-h-[44px] max-md:min-h-[48px] px-5 border border-accent text-accent no-underline text-[13px] font-semibold tracking-[0.14em] uppercase hover:bg-accent hover:text-white max-md:w-full"
                 >
                   Read full coverage
                   <svg

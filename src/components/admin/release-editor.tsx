@@ -337,7 +337,7 @@ export default function ReleaseEditor({
                 type="file"
                 accept="image/*"
                 onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                className="text-[14px]"
+                className="text-[14px] text-secondary file:mr-3 file:py-2 file:px-4 file:border file:border-ink file:bg-white file:text-ink file:text-[13px] file:font-semibold file:cursor-pointer file:rounded-none"
               />
               <p className="m-0 text-[13px] text-caption">
                 Landscape 16:9, at least 1600 × 900 px.

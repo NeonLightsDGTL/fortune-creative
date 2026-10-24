@@ -121,7 +121,7 @@ export default async function HomePage() {
           })}
           <Link
             href="/releases"
-            className="self-center flex flex-col items-center justify-center gap-[10px] p-4 max-md:py-0 max-md:min-h-[56px] max-md:flex-row border border-ink text-ink no-underline text-center text-[13px] font-semibold tracking-[0.14em] leading-[1.5] uppercase hover:bg-ink hover:text-white"
+            className="self-center flex flex-col items-center justify-center gap-[10px] p-4 max-md:py-0 max-md:min-h-[56px] max-md:flex-row border border-accent text-accent no-underline text-center text-[13px] font-semibold tracking-[0.14em] leading-[1.5] uppercase hover:bg-accent hover:text-white"
           >
             Read all releases
             <svg
@@ -207,7 +207,7 @@ export default async function HomePage() {
           })}
           <Link
             href="/coverage"
-            className="self-center flex flex-col items-center justify-center gap-[10px] p-4 max-md:py-0 max-md:min-h-[56px] max-md:flex-row border border-ink text-ink no-underline text-center text-[13px] font-semibold tracking-[0.14em] leading-[1.5] uppercase hover:bg-ink hover:text-white"
+            className="self-center flex flex-col items-center justify-center gap-[10px] p-4 max-md:py-0 max-md:min-h-[56px] max-md:flex-row border border-accent text-accent no-underline text-center text-[13px] font-semibold tracking-[0.14em] leading-[1.5] uppercase hover:bg-accent hover:text-white"
           >
             Read all coverage
             <svg

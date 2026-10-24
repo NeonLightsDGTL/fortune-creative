@@ -158,7 +158,7 @@ function SignupForm({
           <button
             type="submit"
             disabled={status === "loading"}
-            className="min-h-12 px-3 border-0 rounded-none bg-ink text-white font-sans text-[12px] font-semibold tracking-[0.12em] uppercase cursor-pointer disabled:opacity-50"
+            className="min-h-12 px-3 border-0 rounded-none bg-accent text-white font-sans text-[12px] font-semibold tracking-[0.12em] uppercase cursor-pointer disabled:opacity-50 hover:bg-white hover:text-accent hover:outline hover:outline-1 hover:outline-accent"
           >
             {status === "loading" ? "Submitting…" : "Submit"}
           </button>
@@ -178,7 +178,7 @@ function SignupForm({
             <button
               type="submit"
               disabled={status === "loading"}
-              className="flex-none h-11 px-[18px] border-0 rounded-none bg-ink text-white font-sans text-[12px] font-semibold tracking-[0.12em] uppercase cursor-pointer disabled:opacity-50"
+              className="flex-none h-11 px-[18px] border-0 rounded-none bg-accent text-white font-sans text-[12px] font-semibold tracking-[0.12em] uppercase cursor-pointer disabled:opacity-50 hover:bg-white hover:text-accent hover:outline hover:outline-1 hover:outline-accent"
             >
               {status === "loading" ? "Submitting…" : "Submit"}
             </button>

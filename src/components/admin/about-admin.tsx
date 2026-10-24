@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/client";
 import { storageUrl } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
 import dynamic from "next/dynamic";
 
@@ -25,6 +26,7 @@ export default function AboutAdmin({
   const [statusText, setStatusText] = useState("All changes saved");
   const [dirty, setDirty] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
   const supabase = createClient();
 
   const photoUrl = initialPhotoPath
@@ -75,6 +77,7 @@ export default function AboutAdmin({
     setSaving(false);
     setDirty(false);
     setStatusText("Saved. The About page is updated.");
+    router.refresh();
   }
 
   return (
@@ -145,7 +148,7 @@ export default function AboutAdmin({
                 setFile(e.target.files?.[0] ?? null);
                 markDirty();
               }}
-              className="text-[14px]"
+              className="text-[14px] text-secondary file:mr-3 file:py-2 file:px-4 file:border file:border-ink file:bg-white file:text-ink file:text-[13px] file:font-semibold file:cursor-pointer file:rounded-none"
             />
             <p className="m-0 text-[13px] leading-[1.45] text-caption">
               Portrait (taller than wide), at least 1200 × 1500 px.
