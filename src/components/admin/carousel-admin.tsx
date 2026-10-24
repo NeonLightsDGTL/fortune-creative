@@ -45,6 +45,14 @@ export default function CarouselAdmin({
 
   const supabase = createClient();
 
+  async function refetch() {
+    const { data } = await supabase
+      .from("carousel_slides")
+      .select("*")
+      .order("position");
+    if (data) setSlides(data);
+  }
+
   function startAdd() {
     setForm(emptyForm);
     setEditing(true);
@@ -125,7 +133,7 @@ export default function CarouselAdmin({
     setSaving(false);
     setEditing(false);
     setForm(emptyForm);
-    router.refresh();
+    await refetch();
   }
 
   async function remove(slide: Slide) {
@@ -133,7 +141,6 @@ export default function CarouselAdmin({
     const timer = setTimeout(async () => {
       await supabase.from("carousel_slides").delete().eq("id", slide.id);
       setUndo(null);
-      router.refresh();
     }, 5000);
     if (undo) {
       clearTimeout(undo.timer);

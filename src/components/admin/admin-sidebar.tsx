@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
   { href: "/admin", label: "Home" },
@@ -18,6 +19,13 @@ function isCurrent(pathname: string, href: string): boolean {
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  async function handleLogout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/admin/login");
+  }
 
   return (
     <nav
@@ -51,14 +59,23 @@ export default function AdminSidebar() {
           );
         })}
       </ul>
-      <a
-        href="/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-auto flex items-center min-h-[44px] px-3 text-[#E6E6E6] no-underline text-[14px] hover:text-white hover:bg-[#2A2A2A]"
-      >
-        View live site
-      </a>
+      <div className="mt-auto flex flex-col gap-1">
+        <a
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center min-h-[44px] px-3 text-[#E6E6E6] no-underline text-[14px] hover:text-white hover:bg-[#2A2A2A]"
+        >
+          View live site
+        </a>
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="flex items-center min-h-[44px] px-3 text-[#999] bg-transparent border-0 text-[14px] cursor-pointer hover:text-white hover:bg-[#2A2A2A] text-left"
+        >
+          Log out
+        </button>
+      </div>
     </nav>
   );
 }

@@ -10,5 +10,5 @@ export default async function AdminCoveragePage() {
     .select("*, tags(name)")
     .order("published_date", { ascending: false });
 
-  return <CoverageListAdmin initialItems={items ?? []} />;
+  return <CoverageListAdmin key={Date.now()} initialItems={items ?? []} />;
 }

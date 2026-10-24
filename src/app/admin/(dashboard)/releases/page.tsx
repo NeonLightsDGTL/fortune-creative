@@ -10,5 +10,5 @@ export default async function AdminReleasesPage() {
     .select("*, tags(name)")
     .order("release_date", { ascending: false });
 
-  return <ReleasesListAdmin initialReleases={releases ?? []} />;
+  return <ReleasesListAdmin key={Date.now()} initialReleases={releases ?? []} />;
 }

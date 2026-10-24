@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
   { href: "/admin", label: "Home" },
@@ -26,8 +27,15 @@ function getSectionLabel(pathname: string): string {
 
 export default function AdminMobileHeader() {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  async function handleLogout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/admin/login");
+  }
 
   useEffect(() => {
     setOpen(false);
@@ -124,10 +132,17 @@ export default function AdminMobileHeader() {
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center min-h-[48px] px-5 text-[#999] no-underline text-[14px]"
+            className="flex items-center min-h-[48px] px-5 text-[#999] no-underline text-[14px] border-b border-[#333]"
           >
             View live site
           </a>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex items-center min-h-[48px] px-5 text-[#999] bg-transparent border-0 text-[14px] cursor-pointer text-left"
+          >
+            Log out
+          </button>
         </nav>
       )}
     </div>

@@ -22,6 +22,7 @@ export default function AboutAdmin({
   const [credit, setCredit] = useState(initialCredit);
   const [bio, setBio] = useState(initialBio);
   const [file, setFile] = useState<File | null>(null);
+  const [photoPath, setPhotoPath] = useState(initialPhotoPath);
   const [saving, setSaving] = useState(false);
   const [statusText, setStatusText] = useState("All changes saved");
   const [dirty, setDirty] = useState(false);
@@ -29,9 +30,7 @@ export default function AboutAdmin({
   const router = useRouter();
   const supabase = createClient();
 
-  const photoUrl = initialPhotoPath
-    ? storageUrl("about", initialPhotoPath)
-    : null;
+  const photoUrl = photoPath ? storageUrl("about", photoPath) : null;
 
   function markDirty() {
     if (!dirty) {
@@ -44,7 +43,7 @@ export default function AboutAdmin({
     e.preventDefault();
     setSaving(true);
 
-    let photo_path = initialPhotoPath;
+    let photo_path = photoPath;
     if (file) {
       const ext = file.name.split(".").pop();
       const fileName = `about-photo.${ext}`;
@@ -76,6 +75,9 @@ export default function AboutAdmin({
 
     setSaving(false);
     setDirty(false);
+    setPhotoPath(photo_path);
+    setFile(null);
+    if (fileRef.current) fileRef.current.value = "";
     setStatusText("Saved. The About page is updated.");
     router.refresh();
   }

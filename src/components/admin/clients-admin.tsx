@@ -40,6 +40,14 @@ export default function ClientsAdmin({
   const router = useRouter();
   const supabase = createClient();
 
+  async function refetch() {
+    const { data } = await supabase
+      .from("clients")
+      .select("*")
+      .order("position");
+    if (data) setClients(data);
+  }
+
   function startAdd() {
     setForm(emptyForm);
     setEditing(true);
@@ -113,7 +121,7 @@ export default function ClientsAdmin({
     setSaving(false);
     setEditing(false);
     setForm(emptyForm);
-    router.refresh();
+    await refetch();
   }
 
   async function remove(client: Client) {
@@ -121,7 +129,6 @@ export default function ClientsAdmin({
     const timer = setTimeout(async () => {
       await supabase.from("clients").delete().eq("id", client.id);
       setUndo(null);
-      router.refresh();
     }, 5000);
     if (undo) {
       clearTimeout(undo.timer);

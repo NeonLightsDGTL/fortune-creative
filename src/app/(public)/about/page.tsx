@@ -50,7 +50,7 @@ export default async function AboutPage() {
         )}
         {about?.photo_credit && (
           <figcaption className="text-[13px] text-secondary">
-            {about.photo_credit}
+            Photo Credit: {about.photo_credit}
           </figcaption>
         )}
       </figure>
