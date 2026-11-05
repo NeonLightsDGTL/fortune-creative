@@ -23,7 +23,7 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   const supabase = await createClient();
 
-  const [slidesRes, releasesRes, coverageRes] = await Promise.all([
+  const [slidesRes, releasesRes, coverageRes, settingsRes] = await Promise.all([
     supabase
       .from("carousel_slides")
       .select("*")
@@ -40,6 +40,11 @@ export default async function HomePage() {
       .eq("status", "published")
       .order("published_date", { ascending: false })
       .limit(4),
+    supabase
+      .from("site_settings")
+      .select("tagline")
+      .eq("id", 1)
+      .single(),
   ]);
 
   const slides = (slidesRes.data ?? []).map((s) => ({
@@ -52,13 +57,15 @@ export default async function HomePage() {
 
   const releases = releasesRes.data ?? [];
   const coverage = coverageRes.data ?? [];
+  const tagline =
+    settingsRes.data?.tagline ??
+    "A press agency for artists, productions, and organizations across Broadway and music.";
 
   return (
     <div className="max-w-[1280px] mx-auto px-8 max-md:px-5 pb-28 max-md:pb-16">
       {/* Tagline */}
       <h1 className="m-0 pt-14 pb-10 max-md:pt-8 max-md:pb-6 max-w-[1040px] font-serif font-normal text-[clamp(34px,4.4vw,58px)] max-md:text-[32px] leading-[1.1] max-md:leading-[1.12] tracking-[-0.01em] [text-wrap:balance]">
-        A press agency for artists, productions, and organizations across
-        Broadway and music.
+        {tagline}
       </h1>
 
       {/* Carousel */}

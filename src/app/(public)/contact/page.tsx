@@ -1,4 +1,3 @@
-import EmailDialog from "@/components/email-dialog";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -73,7 +72,6 @@ export default function ContactPage() {
               >
                 dan@fortunecreative.com
               </a>
-              <EmailDialog />
             </span>
           </div>
         </div>
